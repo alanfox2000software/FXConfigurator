@@ -1,0 +1,5 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\MMDevices\Audio\Render\{c9cb7b8f-d836-4555-bdeb-f66aa88ceeda}\Properties]
+"{f33f39c8-96e6-40d9-90f4-53e886d26b7b},11"="DellInc.AlienwareSoundCenter"
+"{E8B011C4-6BC4-40A4-8103-4F8A35E1345C},0"=dword:000000001 ;PKEY_SoundCenterSupported

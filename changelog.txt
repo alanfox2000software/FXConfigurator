@@ -1,0 +1,79 @@
+====================
+FX Configurator
+====================
+
+Creater: alanfox2000
+
+Changelog:
+
+2.0.5.1
+Fix "C:\Windows\system32\config\systemprofile\Desktop is unavailable" popup
+Add rebuild all audio endpoints feature
+
+2.0.5.0
+Add muliple product configs base on devices
+
+2.0.2.0
+Take Ownership Of Registry Key no longer necessary
+Add "Take Ownership Of Selected GUID Key" Button
+
+2.0.1.9
+Fix Offload Mode FX APO Processing Modes reading
+Hide not present endpoint(s)
+
+2.0.1.8
+Fix registry premission problem when restore endpoint registry
+
+2.0.1.7
+Fix GFX APO control
+
+2.0.1.6
+Fix high DPI scaling
+
+2.0.1.5
+Add reg and regedit options
+
+2.0.1.4
+Adjust SetACL commands to take ownership of registry keys
+
+2.0.1.3
+Fix showing wrong device state
+Fix disable all enhancements option
+Fix LFX and GFX Processing Modes Registry Key Reading Problem
+
+2.0.1.2
+New GUI Design
+Add Product Config Tool
+Remake all ini configs
+
+2.0.0.8
+Add disable all enhancements control
+Add sound control panel button
+
+2.0.0.7
+Add backup and restore endpoint registry key function
+
+2.0.0.6
+Fix SetACL 32bit problem
+
+2.0.0.5
+Fix UI registry key reading problem
+Add Dolby Digital Live and DTS Interactive Unlock Using Pihto Realtek HD Audio Codec Driver Patcher (A1)
+Change the owner of the registry key from Administrators to Users when take ownership
+
+2.0.0.3
+Fix ProcessingModes registry key problem
+
+2.0.0.2
+Remove save msgbox
+Arrange Win7, 8, 8.1 and 10 FX configs
+
+2.0.0.1
+Add PKEY_LFX_ProcessingModes_Supported_For_Streaming and PKEY_GFX_ProcessingModes_Supported_For_Streaming modification
+Add Windows 7/8.1 Mulitple Sound Effects Config
+Add modification configs for Windows 10 which are oringal from Windows 
+Add Sonic Focus 3 Config
+Fix save config bug
+
+2.0.0.0
+Initial release

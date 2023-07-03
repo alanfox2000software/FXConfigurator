@@ -1,0 +1,5 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\MMDevices\Audio\Render\{c9cb7b8f-d836-4555-bdeb-f66aa88ceeda}\Properties]
+"{F363DF17-A750-4AC3-B7B5-2BBEFFA9085F},11"="A-Volute.Nahimic" ;PKEY_PRODUCTID
+"{3B454CDE-1938-473F-9DBF-5D6A56332FB5},0"="MSI" ;PKEY_VENDORNAME
