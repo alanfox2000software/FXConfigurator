@@ -1,5 +1,5 @@
 ﻿; 
-;   FX Configurator 2.0.5.1 (28-06-2020)
+;   FX Configurator 2.0.5.5
 ;   Author: alanfox2000
 ;
 #NoEnv
