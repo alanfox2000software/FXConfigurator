@@ -2,9 +2,16 @@
 FX Configurator
 ====================
 
-Creater: alanfox2000
-
 Changelog:
+
+2.0.5.5
+Remove Take Ownership Of Registry Key otion
+Remove realtek hda patch
+Remove SetACL, NSudoLC, bat files
+Add NSudoAPI
+Add Launcher (ahk script)
+Add ms:settings:sounds
+Add Registred Apos
 
 2.0.5.1
 Fix "C:\Windows\system32\config\systemprofile\Desktop is unavailable" popup

@@ -2,27 +2,16 @@
 ;   FX Configurator 2.0.5.1 (28-06-2020)
 ;   Author: alanfox2000
 ;
-
 #NoEnv
 #NoTrayIcon
 #Include Class_ScrollGUI.ahk
 #Include DockA.ahk
 #SingleInstance Force
 SetWorkingDir %A_ScriptDir%
-
-ver = 2.0.5.1
+ver = 2.0.5.5
 ICON = %A_WorkingDir%\FXConfigurator.ico
 Menu, Tray, Icon, %ICON%
 
-
-If (A_Is64bitOS)
-{
- SetACL = %A_WorkingDir%\SetACL64.exe
-}
-Else
-{
- SetACL = %A_WorkingDir%\SetACL32.exe
-}
 LFXRegKey = {d04e05a6-594b-4fb6-a80d-01af5eed7d1d}`,1
 GFXRegKey = {d04e05a6-594b-4fb6-a80d-01af5eed7d1d}`,2
 UIRegKey = {d04e05a6-594b-4fb6-a80d-01af5eed7d1d}`,3
@@ -168,7 +157,6 @@ Gui, ACTIONGUI:Color, White
 Gui ACTIONGUI:Font, s8, Arial
 Gui ACTIONGUI:Add, Text, x8 y+0 w270 h23 +0x200, Endpoint Registry
 Gui ACTIONGUI:Add, Text, x8 y+0 w270 h2 0x10
-Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gRegistryKeyPermissions, Take Ownership Of Selected GUID Key
 Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gJumpToProperties, Jump to Properties Key
 Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gJumpToFxProperties, Jump to FxProperties Key
 Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gImport, Import Registry File
@@ -183,12 +171,13 @@ Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gNotesGui, Save Current Config
 Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gApply_APOConfig, Apply Effect and Processing Modes Configuraions
 Gui ACTIONGUI:Add, Text, x8 y+0 w270 h23 +0x200, Tool
 Gui ACTIONGUI:Add, Text, x8 y+0 w270 h2 0x10
-Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gUnlock, Realtek HDA Audio Codec Driver Patcher (A1)
 Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gPRODUCTGUI, Product Config Tool
 Gui ACTIONGUI:Add, Text, x8 y+0 w270 h23 +0x200, Misc
 Gui ACTIONGUI:Add, Text, x8 y+0 w270 h2 0x10
 Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gServices, >> Restart Windows Audio Service <<
+Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gRAPOs, Registered APOs
 Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gSoundCPL, Sound Control Panel
+Gui ACTIONGUI:Add, Button, x8 y+0 w255 h23 gSoundMS, ms-settings:sound
 Gui ACTIONGUI:Add, Button, x184 y+0 w80 h23 gAboutGui, About
 Gui ACTIONGUI:Font
 Global SG3 := New ScrollGUI(ACTIONGUI, 300, 400, "+LabelACTIONGUI -SysMenu +OwnerDevice +LastFound", 3, 4)
@@ -220,12 +209,12 @@ Gui NotesGui:Font
 Gui, AboutGui: New, -SysMenu +OwnerDevice +AlwaysOnTop
 Gui, AboutGui:Color, White
 Gui AboutGui:Font, s8, Arial
-Gui AboutGui:Add, Picture, x8 y16 w32 h32, %ICON%
-Gui AboutGui:Add, Text, x48 y16 w150 h23 +0x200, FX Configurator %ver%
-Gui AboutGui:Add, Text, x48 y40 w220 h23 +0x200, Copyright © 2020 alanfox2000
+Gui AboutGui:Add, Picture, x8 y16 w64 h64, %ICON%
+Gui AboutGui:Add, Text, x88 y16 w150 h23 +0x200, FX Configurator %ver%
 Gui AboutGui:Add, Text, x7 y93 w290 h2 0x10
 Gui AboutGui:Add, Button, x218 y102 w80 h23 gAboutGuiClose, OK
-Gui AboutGui:Add, Link, x48 y64 w200 h23 +0x200, Contact: <a href="https://puresoftapps.blogspot.com/">puresoftapps.blogspot.com</a>
+Gui AboutGui:Add, Link, x88 y44 w200 h23 +0x200, <a href="changelog.txt">Changelog</a>
+Gui AboutGui:Add, Link, x88 y64 w200 h23 +0x200, <a href="https://github.com/alanfox2000software/FXConfigurator">Github Page</a>
 Gui AboutGui:Font
 
 Gui, Device:Show, w920 h70 x250 y50, FX Configurator
@@ -394,7 +383,6 @@ gosub Import_ProductSettings
 gosub INI_Read_APOConfig
 gosub GuiWrite
 gosub GuiGet
-;gosub RegistryKeyPermissions
 gosub WriteReg
 gosub Services
 SplashTextOff
@@ -407,7 +395,6 @@ Apply_APOConfig:
 SplashTextOn, , , Please Wait...
 gosub DisableMainGUI
 gosub GuiGet
-;gosub RegistryKeyPermissions
 gosub WriteReg
 SplashTextOff
 gosub Popup_Finish
@@ -432,9 +419,17 @@ SoundCPL:
 Run, %ComSpec% /c "control mmsys.cpl sounds",, Hide
 Return
 
+SoundMS:
+Run, ms-settings:sound
+Return
+
 Services:
 Runwait, %ComSpec% /c "net stop Audiosrv /yes",, Hide
 Runwait, %ComSpec% /c "net start Audiosrv",, Hide
+Return
+
+RAPOS:
+RegJump("HKEY_CLASSES_ROOT\AudioEngine\AudioProcessingObjects")
 Return
 
 NotesGui:
@@ -515,25 +510,6 @@ Gui, APOGUI:-Disabled
 Gui, PROCESSGUI:-Disabled
 Gui, ACTIONGUI:-Disabled
 Gui, AboutGui:Hide
-Return
-
-Unlock:
-If (A_Is64bitOS)
-{
-    Runwait, %ComSpec% /c "takeown /f "%A_WinDir%\System32\RltkAPO64.dll"",, Hide
-    Runwait, %ComSpec% /c "takeown /f "%A_WinDir%\SysWOW64\RltkAPO.dll"",, Hide
-    Runwait, %ComSpec% /c "cacls "%A_WinDir%\System32\RltkAPO64.dll" /e /p administrators:f",, Hide
-    Runwait, %ComSpec% /c "cacls "%A_WinDir%\System32\RltkAPO64.dll" /e /p users:f",, Hide
-    Runwait, %ComSpec% /c "cacls "%A_WinDir%\SysWOW64\RltkAPO.dll" /e /p administrators:f",, Hide
-    Runwait, %ComSpec% /c "cacls "%A_WinDir%\SysWOW64\RltkAPO.dll" /e /p users:f",, Hide
-}
-Else
-{
-    Runwait, %ComSpec% /c "takeown /f "%A_WinDir%\System32\RltkAPO.dll"",, Hide
-    Runwait, %ComSpec% /c "cacls "%A_WinDir%\System32\RltkAPO.dll" /e /p administrators:f",, Hide
-    Runwait, %ComSpec% /c "cacls "%A_WinDir%\System32\RltkAPO.dll" /e /p users:f",, Hide
-}
-Run, %A_WorkingDir%\realtek.hd.sound.driver-patch.exe
 Return
 
 DisableMainGUI:
@@ -638,7 +614,6 @@ gosub EnableMainGUI
 Return
 
 Disable_SysFx:
-;gosub RegistryKeyPermissions
 GuiControlGet, IsDISABLESYSFX, APOGUI:
 If IsDISABLESYSFX = 0
 {
@@ -724,17 +699,12 @@ GuiControl, ACTIONGUI: +AltSubmit, DealProgram
 GuiControlGet, DealProgramIndex, ACTIONGUI:, DealProgram
 Return
 
-DealProgramAction:
-Return
-
 JumpToFxProperties:
-JumpRegKey = %LoadPath%\%SelectedGUID%\FxProperties
-RegJump(JumpRegKey)
+RegJump("%LoadPath%\%SelectedGUID%\FxProperties")
 Return
 
 JumpToProperties:
-JumpRegKey = %LoadPath%\%SelectedGUID%\Properties
-RegJump(JumpRegKey)
+RegJump("%LoadPath%\%SelectedGUID%\Properties")
 Return
 
 GuiClear:
@@ -1161,20 +1131,6 @@ Copy:
 clipboard = %SelectedGUID%
 Return
 
-RegistryKeyPermissions:
-Runwait, "%SetACL%" -on "%LoadPath%\%SelectedGUID%" -ot reg -actn setowner -ownr "n:Administrators",, Hide
-Runwait, "%SetACL%" -on "%LoadPath%\%SelectedGUID%" -ot reg -actn ace -ace "n:Administrators;p:full",, Hide
-Runwait, "%SetACL%" -on "%LoadPath%\%SelectedGUID%" -ot reg -actn ace -ace "n:Users;p:full",, Hide
-Runwait, "%SetACL%" -on "%LoadPath%\%SelectedGUID%\FxProperties" -ot reg -actn setowner -ownr "n:Administrators",, Hide
-Runwait, "%SetACL%" -on "%LoadPath%\%SelectedGUID%\FxProperties" -ot reg -actn ace -ace "n:Administrators;p:full",, Hide
-Runwait, "%SetACL%" -on "%LoadPath%\%SelectedGUID%\FxProperties" -ot reg -actn ace -ace "n:Users;p:full",, Hide
-Runwait, "%SetACL%" -on "%LoadPath%\%SelectedGUID%\Properties" -ot reg -actn setowner -ownr "n:Administrators",, Hide
-Runwait, "%SetACL%" -on "%LoadPath%\%SelectedGUID%\Properties" -ot reg -actn ace -ace "n:Administrators;p:full",, Hide
-Runwait, "%SetACL%" -on "%LoadPath%\%SelectedGUID%\Properties" -ot reg -actn ace -ace "n:Users;p:full",, Hide
-gosub Popup_Finish
-Return
-
-
 ShowForms(BShow)
     {
     global
@@ -1224,3 +1180,4 @@ RegJump(RegPath)
 	RegWrite, REG_SZ, HKCU, Software\Microsoft\Windows\CurrentVersion\Applets\Regedit, LastKey, %RegPath%
 	Run, %A_WinDir%\regedit.exe
 }
+
