@@ -5,7 +5,7 @@ FX Configurator
 Changelog:
 
 2.0.5.5
-Remove Take Ownership Of Registry Key otion
+Remove Take Ownership Of Registry Key option
 Remove realtek hda patch
 Remove SetACL, NSudoLC, bat files
 Add NSudoAPI
