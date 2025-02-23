@@ -10,8 +10,8 @@ Remove realtek hda patch
 Remove SetACL, NSudoLC, bat files
 Add NSudoAPI
 Add Launcher (ahk script)
-Add ms:settings:sounds
-Add Registred Apos
+Add ms-settings:sound
+Add Registred APOs
 
 2.0.5.1
 Fix "C:\Windows\system32\config\systemprofile\Desktop is unavailable" popup
